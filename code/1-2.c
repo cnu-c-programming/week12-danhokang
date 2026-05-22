@@ -11,11 +11,10 @@ int main(int argc, const char *argv[]) {
 
         FILE *fp = fopen(filename, "r");
         if (fp == NULL) {
-            continue;
+            return 0;
         }
 
         fgets(buffer, sizeof(buffer), fp);
-
         fclose(fp);
 
         printf("%s", buffer);
