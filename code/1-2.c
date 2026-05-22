@@ -17,7 +17,7 @@ int main(int argc, const char *argv[]) {
         fgets(buffer, sizeof(buffer), fp);
         fclose(fp);
 
-        printf("%s", buffer);
+        printf("%s\n", buffer);
     }
 
     return 0;
