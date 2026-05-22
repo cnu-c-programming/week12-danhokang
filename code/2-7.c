@@ -3,10 +3,10 @@
 #include <stdlib.h>
 
 typedef struct config {
-    char inputFilename[64];
-    int options;
-    char sectionName[64];
-    unsigned long long address;
+    char InputFileName[64];
+    int Options;
+    char SectionName[64];
+    unsigned long long Address;
 } Config;
 
 void config_parser(Config *config_ptr) {
@@ -16,22 +16,21 @@ void config_parser(Config *config_ptr) {
         return;
     }
 
-    char line[256];
+    char key[64];
+    char value[128];
 
-    while (fgets(line, sizeof(line), fp) != NULL) {
-        char key[64];
-        char value[128];
-
-        if (sscanf(line, "%63[^=]=%127s", key, value) == 2) {
-            if (strcmp(key, "InputFilename") == 0) {
-                strcpy(config_ptr->inputFilename, value);
-            } else if (strcmp(key, "Options") == 0) {
-                config_ptr->options = atoi(value);
-            } else if (strcmp(key, "SectionName") == 0) {
-                strcpy(config_ptr->sectionName, value);
-            } else if (strcmp(key, "Address") == 0) {
-                config_ptr->address = strtoull(value, NULL, 10);
-            }
+    while (fscanf(fp, "%63[^=]=%127s\n", key, value) == 2) {
+        if (strcmp(key, "InputFileName") == 0) {
+            strcpy(config_ptr->InputFileName, value);
+        } 
+        else if (strcmp(key, "Options") == 0) {
+            config_ptr->Options = atoi(value);
+        } 
+        else if (strcmp(key, "SectionName") == 0) {
+            strcpy(config_ptr->SectionName, value);
+        } 
+        else if (strcmp(key, "Address") == 0) {
+            config_ptr->Address = strtoull(value, NULL, 0);
         }
     }
 
@@ -39,15 +38,15 @@ void config_parser(Config *config_ptr) {
 }
 
 int main(int argc, const char *argv[]) {
-    Config config = {0};
+    Config config;
 
     config_parser(&config);
 
     printf("config: %s %d %s %llu\n",
-           config.inputFilename,
-           config.options,
-           config.sectionName,
-           config.address);
+           config.InputFileName,
+           config.Options,
+           config.SectionName,
+           config.Address);
 
     return 0;
 }
